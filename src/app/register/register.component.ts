@@ -35,9 +35,9 @@ export class RegisterComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.dialogFormGroup = this.fb.group({
-      confirmAction: [false]
-    });
+    // this.dialogFormGroup = this.fb.group({
+    //   confirmAction: [false]
+    // });
 
     this.form = this.fb.group({
       firstname: ["", Validators.required],
