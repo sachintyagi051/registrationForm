@@ -18,34 +18,20 @@ export class RegisterComponent implements OnInit {
   form: FormGroup;
   address: FormArray;
 
-  disabledAgreement: boolean = true;
-  changeCheck(event) {
-    this.disabledAgreement = !event.checked;
-  }
+  regex = /[0-9\+\-\ ]/;
 
-  keyPress(event: any) {
-    const pattern = /[0-9\+\-\ ]/;
-
-    let inputChar = String.fromCharCode(event.charCode);
-    if (event.keyCode != 8 && !pattern.test(inputChar)) {
-      event.preventDefault();
-    }
-  }
+  
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    // this.dialogFormGroup = this.fb.group({
-    //   confirmAction: [false]
-    // });
-
-    this.form = this.fb.group({
+      this.form = this.fb.group({
       firstname: ["", Validators.required],
       lastname: ["", Validators.required],
       username: ["", Validators.required],
       email: [""],
       address: this.fb.array([this.addressLines()]),
-      checkbox: [""]
+      checkbox: ["", Validators.required]
     });
 
     console.log("form", this.form);
@@ -68,7 +54,12 @@ export class RegisterComponent implements OnInit {
       state: ["", Validators.required],
       pincode: [
         "",
-        [Validators.required, Validators.minLength(6), Validators.maxLength(6)]
+        [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(6),
+          Validators.pattern(this.regex)
+        ]
       ]
     });
   }
@@ -79,6 +70,9 @@ export class RegisterComponent implements OnInit {
 
   removeAddress(addres: any) {
     let index = this.address.controls.indexOf(addres);
+
+    console.log("this.address:", this.address);
+
     this.address.removeAt(index);
   }
 
