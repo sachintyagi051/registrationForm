@@ -1,0 +1,245 @@
+<div class="bg-light">
+  <div class="container">
+    <div class="py-5">
+      <u><h1>Registration Form</h1></u>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" #myForm="ngForm">
+        <div class="form-group" style="padding-top: 20px;">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="FirstName">First name</label>
+
+              <input
+                formControlName="firstname"
+                id="firstname"
+                type="text"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                  form.get('firstname').touched && form.get('firstname').invalid
+                "
+                class="alert alert-danger"
+                style="width: 100%;"
+              >
+                First name is required.
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="LastName">Last name</label>
+
+              <input
+                formControlName="lastname"
+                id="lastname"
+                type="text"
+                class="form-control"
+              />
+              <div
+                *ngIf="
+                  form.get('lastname').touched && form.get('lastname').invalid
+                "
+                class="alert alert-danger"
+                style="width: 100%;"
+              >
+                Last name is required.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label for="username">Username</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">@</span>
+              </div>
+              <input
+                formControlName="username"
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Username"
+              />
+              <div
+                *ngIf="
+                  form.get('username').touched && form.get('username').invalid
+                "
+                class="alert alert-danger"
+                style="width: 100%;"
+              >
+                Username is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="md-120" style="padding-top: 15px;">
+            <label for="email"
+              >Email
+              <span class="text-muted">(Optional)</span>
+            </label>
+            <input
+              formControlName="email"
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="you@example.com"
+            />
+          </div>
+          <br />
+          <div
+            formArrayName="address"
+            *ngFor="let adres of formArrayControls(); let i = index"
+          >
+            <div [formGroupName]="i">
+              <h6>{{ i != 0 ? "other" : "" }} Address</h6>
+
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="float: right;"
+                *ngIf="i != 0"
+                (click)="removeAddress(i)"
+              >
+                remove
+              </button>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="addressLine1"
+                    >Address Line 1
+                    <span class="text-muted">(House no/Flat no)</span>
+                  </label>
+                  <input
+                    formControlName="addressLine1"
+                    id="addressLine1"
+                    type="text"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="
+                      adres.get('addressLine1').touched &&
+                      adres.get('addressLine1').invalid
+                    "
+                    class="alert alert-danger"
+                    style="width: 100%;"
+                  >
+                    Add "House no. / Flat no."
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="addressLine2"
+                    >Address Line 2
+                    <span class="text-muted">(Street/Area/landmark)</span>
+                  </label>
+                  <input
+                    formControlName="addressLine2"
+                    id="addressLine2"
+                    type="text"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="
+                      adres.get('addressLine2').touched &&
+                      adres.get('addressLine2').invalid
+                    "
+                    class="alert alert-danger"
+                    style="width: 100%;"
+                  >
+                    Add "Street/Area/landmark"
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="city">City </label>
+                  <input
+                    formControlName="city"
+                    id="city"
+                    type="text"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="
+                      adres.get('city').touched && adres.get('city').invalid
+                    "
+                    class="alert alert-danger"
+                    style="width: 100%;"
+                  >
+                    Add "Valid City"
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="state">State </label>
+                  <input
+                    formControlName="state"
+                    id="state"
+                    type="text"
+                    class="form-control"
+                  />
+                  <div
+                    *ngIf="
+                      adres.get('state').touched && adres.get('state').invalid
+                    "
+                    class="alert alert-danger"
+                    style="width: 100%;"
+                  >
+                    Add "Valid State"
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label for="pincode">PinCode </label>
+                  <input
+                    id="pincode"
+                    id="state"
+                    type="text"
+                    class="form-control"
+                    (keypress)="keyPress($event)"
+                    minlength="6"
+                    maxlength="6"
+                    formControlName="pincode"
+                  />
+                  <div
+                    *ngIf="
+                      adres.get('pincode').touched &&
+                      adres.get('pincode').invalid
+                    "
+                    class="alert alert-danger"
+                    style="width: 100%;"
+                  >
+                    Add "Valid Pincode"
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            
+            <button
+              style="margin-bottom: 30px;"
+              type="button"
+              class="btn btn-primary"
+              (click)="addNewAddress()"
+            >
+              Add New Address
+            </button>
+          </div>
+          <h6 style="padding: 10px 0px 20px 10px;">
+            (* fields are required)
+          </h6>
+
+          <input
+            type="checkbox"
+            formControlName="checkbox"
+            [(ngModel)]="checked"
+          />I agree Terms & Conditions
+          <button
+            [disabled]="!checked || !myForm.form.valid"
+            class="btn btn-primary btn-lg btn-block"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
